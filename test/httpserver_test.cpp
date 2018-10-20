@@ -3,7 +3,7 @@
 
 #include <signal.h>
 
-#include "log.h"
+#include "xlogger.h"
 
 #include "address.h"
 #include "tcpserver.h"
@@ -27,32 +27,29 @@ void onHandler(const HttpConnectionPtr_t& conn, const HttpRequest& request)
     resp.setContentType("text/html");
     resp.setKeepAlive(true);
     resp.enableDate();
-   
-    resp.body.append("first"); 
-    //resp.body.append(1600, 'a');
+
     resp.body.append("Hello World");
 
     conn->send(resp);
 }
 
-
-int main()
+int main(int argc, char* argv[])
 {
-    Log::rootLog().setLevel(Log::ERROR);
+    XLOGGER(argv[0]).StdErr(true).Colour(true).Dir("./logs");
     
     TcpServer s;
 
     HttpServer httpd(&s);
 
-    httpd.setHttpCallback("/", std::bind(&onHandler, _1, _2));
+    httpd.setHttpCallback("/change", std::bind(&onHandler, _1, _2));
 
     httpd.listen(Address(11181));
 
-    LOG_INFO("start tcp server");
+    XINFO("start tcp server");
 
     s.start(4);
 
-    LOG_INFO("stop server");
+    XINFO("stop server");
 
     return 0;
 } 

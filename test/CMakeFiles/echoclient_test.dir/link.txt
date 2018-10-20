@@ -1,1 +1,0 @@
-/usr/bin/c++  -std=c++0x     -rdynamic CMakeFiles/echoclient_test.dir/echoclient_test.cpp.o  -o ../bin/echoclient_test ../lib/libtnet.a -lrt 
